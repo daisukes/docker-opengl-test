@@ -1,0 +1,44 @@
+version: "2.3"
+
+services:
+  xenial-x11:
+    build:
+      context: ./xenial
+    environment:
+      DISPLAY: ${DISPLAY}
+    network_mode: host
+    command: xeyes
+
+  xenial-opengl:
+    build:
+      context: ./xenial
+    environment:
+      DISPLAY: ${DISPLAY}
+    network_mode: host
+    command: glxgears
+
+
+  bionic-x11:
+    build:
+      context: ./bionic
+    environment:
+      DISPLAY: ${DISPLAY}
+      XAUTHORITY: /tmp/.docker.xauth
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
+    command: xeyes
+
+  bionic-opengl:
+    build:
+      context: ./bionic
+    environment:
+      DISPLAY: ${DISPLAY}
+      XAUTHORITY: /tmp/.docker.xauth
+      NVIDIA_DRIVER_CAPABILITIES: "display"
+      NVIDIA_VISIBLE_DEVICES: all
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
+    command: glxgears
+
